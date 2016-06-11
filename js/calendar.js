@@ -46,7 +46,12 @@ function CalendarObj($, args, mode) {
             }
             var description = '';
             if (typeof event.description !== 'undefined' && event.description !== '') {
-                description = args.qtip.description.replace('%description%', event.description); // '<p>%description%</p>'
+				if (args.qtip.linkify) {
+					console.log(linkifyHtml(event.description, {defaultProtocol: 'https'}));
+					description = args.qtip.description.replace('%description%', linkifyHtml(event.description, {defaultProtocol: 'https'})); // '<p>%description%</p>'
+				} else {
+					description = args.qtip.description.replace('%description%', event.description); // '<p>%description%</p>'
+				}
             }
             var time = '';
                 time = moment(event.start).format("ddd MMM DD " + fmt) + moment(event.end).format(' - ' + fmt);

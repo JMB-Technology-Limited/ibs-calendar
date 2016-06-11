@@ -184,6 +184,7 @@ class IBS_CALENDAR {
         add_settings_field('weekNumbers', 'weekNumbers', array(__CLASS__, 'field_weekNumbers'), 'fullcalendar', 'section_fullcalendar');
 
 
+
         add_settings_section('section_feeds', '', array(__CLASS__, 'admin_feeds_header'), 'feeds');
         add_settings_field('feedCount', 'event feed count', array(__CLASS__, 'field_feedCount'), 'feeds', 'section_feeds');
         add_settings_field('feeds', 'event feeds', array(__CLASS__, 'field_feeds'), 'feeds', 'section_feeds');
@@ -192,6 +193,7 @@ class IBS_CALENDAR {
         add_settings_field('rounded', 'Rounded', array(__CLASS__, 'field_qtip_rounded'), 'qtip', 'section_qtip');
         add_settings_field('shadow', 'Shadow', array(__CLASS__, 'field_qtip_shadow'), 'qtip', 'section_qtip');
         add_settings_field('style', 'Style', array(__CLASS__, 'field_qtip_style'), 'qtip', 'section_qtip');
+        add_settings_field('linkify', 'Linkify', array(__CLASS__, 'field_qtip_linkify'), 'qtip', 'section_qtip');
 
         add_settings_field('content', 'Content', array(__CLASS__, 'field_qtip_content_bar'), 'qtip', 'section_qtip');
         add_settings_field('title', 'Title', array(__CLASS__, 'field_qtip_content_title'), 'qtip', 'section_qtip');
@@ -515,6 +517,11 @@ class IBS_CALENDAR {
     static function field_qtip_rounded() {
         $checked = self::$options['qtip']['shadow'] ? "checked" : '';
         echo '<input type="checkbox" name="ibs_calendar_options[qtip][shadow]" value="qtip-rounded"' . $checked . '/>';
+    }
+
+    static function field_qtip_linkify() {
+        $checked = self::$options['qtip']['linkify'] ? "checked" : '';
+        echo '<input type="checkbox" name="ibs_calendar_options[qtip][linkify]" value="qtip-linkify"' . $checked . '/>';
     }
 
     static function field_qtip_shadow() {
@@ -864,6 +871,9 @@ class IBS_CALENDAR {
             wp_register_style("ibs-dropdown-style", plugins_url("js/jquery.dropdown/jquery.dropdown.css", __FILE__));
             wp_register_script("ibs-dropdown-script", plugins_url("js/jquery.dropdown/jquery.dropdown.js", __FILE__));
 
+            wp_register_script('ibs-linkify-script', plugins_url("js/linkify$min.js", __FILE__));
+            wp_register_script('ibs-linkify-html-script', plugins_url("js/linkify-html$min.js", __FILE__));
+
             wp_register_script('rrule-rrule-script', plugins_url("js/rrule$min.js", __FILE__));
         }
 
@@ -888,7 +898,9 @@ class IBS_CALENDAR {
             'ibs-fullcalendar-script',
             'ibs-fullcalendar-gcal-script',
             'ibs-fullcalendar-lang-all-script',
-            'ibs-qtip-script'
+            'ibs-qtip-script',
+            'ibs-linkify-script',
+            'ibs-linkify-html-script'
         );
         static $style_handles = array(
             'ibs-calendar-ui-theme-style',
